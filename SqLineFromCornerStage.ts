@@ -118,3 +118,44 @@ class Animator {
         }
     }
 }
+
+class SLFCNode {
+    prev : SLFCNode
+    next : SLFCNode
+    state : State = new State()
+    constructor(private i : number) {
+
+    }
+
+    addNeighbor() {
+        if (this.i < nodes - 1) {
+            this.next = new SLFCNode(this.i + 1)
+            this.next.prev = this
+        }
+    }
+
+    draw(context : CanvasRenderingContext2D) {
+        drawSLFCNode(context, this.i, this.state.scale)
+        this.next.draw(context)
+    }
+
+    update(cb : Function) {
+        this.state.update(cb)
+    }
+
+    startUpdating(cb : Function) {
+        this.state.startUpdating(cb)
+    }
+
+    getNext(dir : number, cb : Function) : SLFCNode {
+        var curr : SLFCNode = this.prev
+        if (dir == 1) {
+            curr = this.next
+        }
+        if (curr) {
+            return curr
+        }
+        cb()
+        return this 
+    }
+}
