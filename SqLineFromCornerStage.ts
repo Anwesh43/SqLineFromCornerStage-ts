@@ -181,3 +181,23 @@ class SqLineFromCorner {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+    slfc : SqLineFromCorner = new SqLineFromCorner()
+    animator : Animator = new Animator()
+    render(context : CanvasRenderingContext2D) {
+        this.slfc.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.slfc.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.slfc.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
