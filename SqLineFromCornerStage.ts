@@ -124,7 +124,7 @@ class SLFCNode {
     next : SLFCNode
     state : State = new State()
     constructor(private i : number) {
-
+        this.addNeighbor()
     }
 
     addNeighbor() {
@@ -156,6 +156,28 @@ class SLFCNode {
             return curr
         }
         cb()
-        return this 
+        return this
+    }
+}
+
+class SqLineFromCorner {
+    root : SLFCNode = new SLFCNode(0)
+    curr : SLFCNode = this.root
+    dir : number = 1
+
+    draw(context : CanvasRenderingContext2D) {
+        this.root.draw(context)
+    }
+
+    update(cb : Function) {
+        this.curr.update(() => {
+            this.curr = this.curr.getNext(this.dir, () => {
+                this.dir *= -1
+            })
+        })
+    }
+
+    startUpdating(cb : Function) {
+        this.curr.startUpdating(cb)
     }
 }
