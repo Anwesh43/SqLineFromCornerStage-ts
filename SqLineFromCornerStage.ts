@@ -33,3 +33,21 @@ class SqLineFromCornerStage {
         stage.handleTap()
     }
 }
+
+const getInverse : Function = (n : number) : number => 1 / n
+
+const divideScale : Function = (scale : number, i : number, n : number) : number =>{
+    const a : number = getInverse(n)
+    return Math.min(a, Math.max(0, scale - i * a)) * n
+}
+
+const scaleFactor : Function = (scale : number) : number => Math.floor(scale / scDiv)
+
+const mirrorValue : Function = (scale : number, a : number , b : number) => {
+    const k : number = scaleFactor(scale)
+    return (1 - k) * getInverse(a) + k * getInverse(b)
+}
+
+const updateScale : Function = (scale : number, dir : number, a : number, b : number) : number => {
+    return scGap * dir * mirrorValue(scale, a, b)
+}
