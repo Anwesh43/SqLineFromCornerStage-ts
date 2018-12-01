@@ -71,7 +71,7 @@ const drawSLFCNode : Function = (context : CanvasRenderingContext2D, i : number,
     for (var j = 0; j < lines; j++) {
         const sc : number = divideScale(sc1, j, lines)
         context.save()
-        context.rotate(Math.PI/2 * sc)
+        context.rotate(Math.PI/2 * j)
         context.beginPath()
         context.moveTo(size/2, size/2)
         context.lineTo(size/2 + (size/2) * sc, size/2 + (size/2) * sc)
@@ -88,6 +88,7 @@ class State {
 
     update(cb : Function) {
         this.scale += updateScale(this.scale, this.dir, lines, 1)
+        console.log(this.scale)
         if (Math.abs(this.scale - this.prevScale) > 1) {
             this.scale = this.prevScale + this.dir
             this.dir = 0
@@ -140,7 +141,9 @@ class SLFCNode {
 
     draw(context : CanvasRenderingContext2D) {
         drawSLFCNode(context, this.i, this.state.scale)
-        this.next.draw(context)
+        if (this.next) {
+            this.next.draw(context)
+        }
     }
 
     update(cb : Function) {
