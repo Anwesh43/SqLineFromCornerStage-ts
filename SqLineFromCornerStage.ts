@@ -51,3 +51,28 @@ const mirrorValue : Function = (scale : number, a : number , b : number) => {
 const updateScale : Function = (scale : number, dir : number, a : number, b : number) : number => {
     return scGap * dir * mirrorValue(scale, a, b)
 }
+
+const drawSLFCNode : Function = (context : CanvasRenderingContext2D, i : number, scale : number) => {
+    const gap : number = w / (nodes + 1)
+    const sc1 : number = divideScale(scale, 0, 2)
+    const sc2 : number = divideScale(scale, 1, 2)
+    const size : number = gap / 3
+    context.lineWidth = Math.min(w, h) / 100
+    context.lineCap = 'round'
+    context.strokeStyle = '#880E4F'
+    context.save()
+    context.translate(gap * (i + 1), h/2)
+    context.rotate(Math.PI/2 * sc2)
+    context.strokeRect(-size/2, -size/2, size, size)
+    for (var j = 0; j < lines; j++) {
+        const sc : number = divideScale(sc1, j, lines)
+        context.save()
+        context.rotate(Math.PI/2 * sc)
+        context.beginPath()
+        context.moveTo(size/2, size/2)
+        context.lineTo(size/2 + (size/2) * sc, size/2 + (size/2) * sc)
+        context.stroke()
+        context.restore()
+    }
+    context.restore()
+}
